@@ -3,6 +3,7 @@ import Login from "./views/Login"
 import SignUp from "./views/SignUp"
 import Todo from "./views/Todo"
 import Auth from "./views/layouts/Auth"
+import NotFound from "./views/NotFound"
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Auth />}>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="*" element={<NotFound />}></Route>
         </Route>
         <Route path="/todo" element={<Todo />} />
       </Routes>
