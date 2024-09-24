@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
 
+const { VITE_API_URL } = import.meta.env;
+
 const Todo = () =>{
     return(<>
     <div id="todoListPage" className="bg-half">

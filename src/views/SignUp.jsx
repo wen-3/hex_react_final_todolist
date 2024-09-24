@@ -1,5 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
+const { VITE_API_URL } = import.meta.env;
+
 const SignUp = () => {
     const navigate = useNavigate();
     const clickSignUp = (e) => {
