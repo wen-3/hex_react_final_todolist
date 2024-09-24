@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom"
-import SignUp from "./SignUp"
-import Login from "./Login"
-import Todo from "./Todo"
+import Login from "./views/Login"
+import SignUp from "./views/SignUp"
+import Todo from "./views/Todo"
+
 
 function App() {
   return (
