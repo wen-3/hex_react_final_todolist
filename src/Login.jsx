@@ -1,4 +1,12 @@
+import { NavLink, useNavigate } from "react-router-dom";
+
 const Login = () => {
+    const navigate = useNavigate();
+
+    const clickLogin = (e) => {
+        navigate('/todo');
+    }
+
     return (<>
         <div id="loginPage" className="bg-yellow">
             <div className="conatiner loginPage vhContainer ">
@@ -14,8 +22,8 @@ const Login = () => {
                         <span>此欄位不可留空</span>
                         <label className="formControls_label" htmlFor="pwd">密碼</label>
                         <input className="formControls_input" type="password" name="pwd" id="pwd" placeholder="請輸入密碼" required />
-                        <input className="formControls_btnSubmit" type="button" onClick="javascript:location.href='#todoListPage'" value="登入" />
-                        <a className="formControls_btnLink" href="#signUpPage">註冊帳號</a>
+                        <input className="formControls_btnSubmit" type="button" onClick={clickLogin} value="登入" />
+                        <NavLink to='/signup' className='formControls_btnLink'>註冊帳號</NavLink>
                     </form>
                 </div>
             </div>

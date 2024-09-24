@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 const Todo = () =>{
     return(<>
     <div id="todoListPage" className="bg-half">
@@ -5,7 +7,7 @@ const Todo = () =>{
             <h1><a href="#">ONLINE TODO LIST</a></h1>
             <ul>
                 <li className="todo_sm"><a href="#"><span>王小明的代辦</span></a></li>
-                <li><a href="#loginPage">登出</a></li>
+                <li><NavLink to={'/'}>登出</NavLink></li>
             </ul>
         </nav>
         <div className="conatiner todoListPage vhContainer">
@@ -28,51 +30,6 @@ const Todo = () =>{
                                 <label className="todoList_label">
                                     <input className="todoList_input" type="checkbox" value="true" />
                                     <span>把冰箱發霉的檸檬拿去丟</span>
-                                </label>
-                                <a href="#">
-                                    <i className="fa fa-times"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <label className="todoList_label">
-                                    <input className="todoList_input" type="checkbox" value="true" />
-                                    <span>打電話叫媽媽匯款給我</span>
-                                </label>
-                                <a href="#">
-                                    <i className="fa fa-times"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <label className="todoList_label">
-                                    <input className="todoList_input" type="checkbox" value="true" />
-                                    <span>整理電腦資料夾</span>
-                                </label>
-                                <a href="#">
-                                    <i className="fa fa-times"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <label className="todoList_label">
-                                    <input className="todoList_input" type="checkbox" value="true" />
-                                    <span>繳電費水費瓦斯費</span>
-                                </label>
-                                <a href="#">
-                                    <i className="fa fa-times"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <label className="todoList_label">
-                                    <input className="todoList_input" type="checkbox" value="true" />
-                                    <span>約vicky禮拜三泡溫泉</span>
-                                </label>
-                                <a href="#">
-                                    <i className="fa fa-times"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <label className="todoList_label">
-                                    <input className="todoList_input" type="checkbox" value="true" />
-                                    <span>約ada禮拜四吃晚餐</span>
                                 </label>
                                 <a href="#">
                                     <i className="fa fa-times"></i>
