@@ -40,7 +40,6 @@ const Login = () => {
             if (res.ok) {
                 const { token, nickname } = await res.json();
                 document.cookie = `loginToken=${token}`;
-                document.cookie = `loginNickname=${nickname}`;
 
                 alert('登入成功');
                 navigate(`/${nickname}/todo`);
