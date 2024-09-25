@@ -20,6 +20,12 @@ const Login = () => {
     const navigate = useNavigate();
 
     const clickLogin = async (e) => {
+        const { email, password } = formData;
+        if (!email || !password) {
+            alert('欄位皆為必填，請確實填寫!');
+            return;
+        }
+
         const url = `${VITE_API_URL}/users/sign_in`
 
         try {
@@ -32,12 +38,7 @@ const Login = () => {
             })
 
             if (res.ok) {
-                // const data = await res.json();
-                // const token = data.token;
-                
                 const { token, nickname } = await res.json();
-                
-                // // 寫入 cookie
                 document.cookie = `loginToken=${token}`;
                 document.cookie = `loginNickname=${nickname}`;
 
