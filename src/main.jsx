@@ -6,9 +6,7 @@ import App from './App.jsx'
 import './assets/index.css'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <HashRouter>
-      <App />
-    </HashRouter>
-  </StrictMode>,
+  <HashRouter>
+    <App />
+  </HashRouter>
 )
