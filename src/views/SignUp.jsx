@@ -22,6 +22,22 @@ const SignUp = () => {
     const navigate = useNavigate();
 
     const clickSignUp = async (e) => {
+        const { email, nickname, password, password2 } = formData;
+        if (!email || !nickname || !password || !password2) {
+            alert('欄位皆為必填，請確實填寫!');
+            return;
+        }
+
+        if (password.length < 6){
+            alert('密碼長度不足 6個字');
+            return;
+        }
+
+        if (password !== password2){
+            alert('密碼與確認密碼不一致');
+            return;
+        }
+
         const url = `${VITE_API_URL}/users/sign_up`;
 
         try {
