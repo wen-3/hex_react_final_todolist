@@ -43,7 +43,7 @@ const Login = () => {
                 document.cookie = `loginNickname=${nickname}`;
 
                 alert('登入成功');
-                navigate('/todo');
+                navigate(`/${nickname}/todo`);
             } else {
                 switch (res.status) {
                     case 400:

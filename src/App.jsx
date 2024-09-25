@@ -16,7 +16,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="*" element={<NotFound />}></Route>
         </Route>
-        <Route path="/todo" element={<Todo />} />
+        <Route path="/:nickname/todo" element={<Todo />} />
       </Routes>
     </>
   )
