@@ -76,8 +76,6 @@ const Todo = () => {
             if (res.ok) {
                 const { data } = await res.json();
                 setTodo(data);
-                console.log(data);
-                
                 alert('資料成功取得')
             } else {
                 alert('資料取得失敗')
@@ -94,7 +92,7 @@ const Todo = () => {
 
     const addTodo = async (e) => {
         e.preventDefault();
-        if(!content){
+        if (!content) {
             alert('欄位不可為空');
             return;
         }
@@ -123,6 +121,29 @@ const Todo = () => {
                 alert('新增失敗')
             }
 
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    // 4. 刪除
+    const deleteTodo = async (e, id) => {
+        e.preventDefault();
+
+        try {
+            const res = await fetch(`${VITE_API_URL}/todos/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: token
+                }
+            })
+
+            if (res.ok) {
+                setTodo(todo.filter(item => item.id !== id));
+                alert('刪除成功')
+            } else {
+                alert('刪除失敗')
+            }
         } catch (err) {
             console.log(err);
         }
@@ -160,7 +181,7 @@ const Todo = () => {
                                                 <input className="todoList_input" type="checkbox" value="true" />
                                                 <span>{item.content}</span>
                                             </label>
-                                            <a style={{ cursor: 'pointer' }}>
+                                            <a style={{ cursor: 'pointer' }} onClick={(e) => deleteTodo(e, item.id)}>
                                                 <i className="fa fa-times"></i>
                                             </a>
                                         </li>
