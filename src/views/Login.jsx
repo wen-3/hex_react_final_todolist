@@ -46,7 +46,7 @@ const Login = () => {
             } else {
                 switch (res.status) {
                     case 400:
-                        alert('登入失敗：欄位不可為空');
+                        alert('登入失敗：欄位驗證失敗');
                         break;
                     case 401:
                         alert('登入失敗：帳號密碼驗證錯誤');

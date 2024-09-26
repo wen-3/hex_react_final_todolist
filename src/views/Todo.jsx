@@ -49,7 +49,7 @@ const Todo = () => {
                     Authorization: token
                 }
             })
-            
+
             if (res.ok) {
                 alert('登出成功')
                 navigate('/');
@@ -67,22 +67,22 @@ const Todo = () => {
                 <h1><a href="/">ONLINE TODO LIST</a></h1>
                 <ul>
                     <li className="todo_sm"><span>{getNickname}</span></li>
-                    <li><a onClick={handelSignOut} >登出</a></li>
+                    <li><a style={{ cursor: 'pointer' }} onClick={handelSignOut} >登出</a></li>
                 </ul>
             </nav>
             <div className="conatiner todoListPage vhContainer">
                 <div className="todoList_Content">
                     <div className="inputBox">
                         <input type="text" placeholder="請輸入待辦事項" />
-                        <a href="#">
+                        <a style={{ cursor: 'pointer' }}>
                             <i className="fa fa-plus"></i>
                         </a>
                     </div>
                     <div className="todoList_list">
                         <ul className="todoList_tab">
-                            <li><a href="#" className="active">全部</a></li>
-                            <li><a href="#">待完成</a></li>
-                            <li><a href="#">已完成</a></li>
+                            <li><a style={{ cursor: 'pointer' }} className="active">全部</a></li>
+                            <li><a style={{ cursor: 'pointer' }}>待完成</a></li>
+                            <li><a style={{ cursor: 'pointer' }}>已完成</a></li>
                         </ul>
                         <div className="todoList_items">
                             <ul className="todoList_item">
@@ -91,14 +91,14 @@ const Todo = () => {
                                         <input className="todoList_input" type="checkbox" value="true" />
                                         <span>把冰箱發霉的檸檬拿去丟</span>
                                     </label>
-                                    <a href="#">
+                                    <a style={{ cursor: 'pointer' }}>
                                         <i className="fa fa-times"></i>
                                     </a>
                                 </li>
                             </ul>
                             <div className="todoList_statistics">
                                 <p> 5 個已完成項目</p>
-                                <a href="#">清除已完成項目</a>
+                                <a style={{ cursor: 'pointer' }}>清除已完成項目</a>
                             </div>
                         </div>
                     </div>
