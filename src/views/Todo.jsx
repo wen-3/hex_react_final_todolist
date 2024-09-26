@@ -6,6 +6,7 @@ const { VITE_API_URL } = import.meta.env;
 const Todo = () => {
     useEffect(() => {
         checkAuth();
+        getTodo();
     }, [])
 
     const token = document.cookie.replace(
@@ -61,6 +62,72 @@ const Todo = () => {
         }
     }
 
+    // 代辦事項相關操作
+    // 1. 取得
+    const [todo, setTodo] = useState([]);
+    const getTodo = async () => {
+        try {
+            const res = await fetch(`${VITE_API_URL}/todos`, {
+                headers: {
+                    Authorization: token
+                }
+            })
+
+            if (res.ok) {
+                const { data } = await res.json();
+                setTodo(data);
+                console.log(data);
+                
+                alert('資料成功取得')
+            } else {
+                alert('資料取得失敗')
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
+    // 2. 新增
+    const [content, setContent] = useState('');
+
+    const addTodo = async (e) => {
+        e.preventDefault();
+        if(!content){
+            alert('欄位不可為空');
+            return;
+        }
+
+        try {
+            const res = await fetch(`${VITE_API_URL}/todos`, {
+                method: 'POST',
+                headers: {
+                    Authorization: token,
+                    "content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    content: content.trim()
+                })
+            })
+
+            if (res.ok) {
+                const { newTodo } = await res.json();
+                setTodo([
+                    ...todo,
+                    newTodo
+                ])
+                alert('新增成功')
+                setContent('');
+            } else {
+                alert('新增失敗')
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (<>
         <div id="todoListPage" className="bg-half">
             <nav>
@@ -73,8 +140,8 @@ const Todo = () => {
             <div className="conatiner todoListPage vhContainer">
                 <div className="todoList_Content">
                     <div className="inputBox">
-                        <input type="text" placeholder="請輸入待辦事項" />
-                        <a style={{ cursor: 'pointer' }}>
+                        <input type="text" placeholder="請輸入待辦事項" value={content} onChange={(e) => setContent(e.target.value)} />
+                        <a style={{ cursor: 'pointer' }} onClick={addTodo}>
                             <i className="fa fa-plus"></i>
                         </a>
                     </div>
@@ -86,15 +153,19 @@ const Todo = () => {
                         </ul>
                         <div className="todoList_items">
                             <ul className="todoList_item">
-                                <li>
-                                    <label className="todoList_label">
-                                        <input className="todoList_input" type="checkbox" value="true" />
-                                        <span>把冰箱發霉的檸檬拿去丟</span>
-                                    </label>
-                                    <a style={{ cursor: 'pointer' }}>
-                                        <i className="fa fa-times"></i>
-                                    </a>
-                                </li>
+                                {todo.map(item => {
+                                    return (
+                                        <li key={item.id}>
+                                            <label className="todoList_label">
+                                                <input className="todoList_input" type="checkbox" value="true" />
+                                                <span>{item.content}</span>
+                                            </label>
+                                            <a style={{ cursor: 'pointer' }}>
+                                                <i className="fa fa-times"></i>
+                                            </a>
+                                        </li>
+                                    )
+                                })}
                             </ul>
                             <div className="todoList_statistics">
                                 <p> 5 個已完成項目</p>
