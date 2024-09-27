@@ -80,7 +80,6 @@ const Todo = () => {
             } else {
                 alert('資料取得失敗')
             }
-
         } catch (err) {
             console.log(err);
         }
@@ -121,6 +120,47 @@ const Todo = () => {
                 alert('新增失敗')
             }
 
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    // 3. 編輯
+    const editTodo = async (e, id) => {
+        e.preventDefault();
+        const inputText = prompt('請輸入修改內容文字:');
+
+        if (inputText === '') {
+            alert('內容不可空白');
+            return;
+        }
+
+        if (!inputText) {
+            alert('取消編輯');
+            return;
+        }
+
+        try {
+            const res = await fetch(`${VITE_API_URL}/todos/${id}`, {
+                method: 'PUT',
+                headers: {
+                    Authorization: token,
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    content: inputText
+                })
+            })
+
+            if (res.ok) {
+                const newTodo = todo.map(item =>
+                    (item.id !== id) ? item : { ...item, content: inputText }
+                )
+                setTodo(newTodo);
+                alert('更新成功');
+            } else {
+                alert('更新失敗');
+            }
         } catch (err) {
             console.log(err);
         }
@@ -181,6 +221,9 @@ const Todo = () => {
                                                 <input className="todoList_input" type="checkbox" value="true" />
                                                 <span>{item.content}</span>
                                             </label>
+                                            <a style={{ cursor: 'pointer' }} onClick={(e) => editTodo(e, item.id)}>
+                                                <i className="fa-solid fa-pen-to-square"></i>
+                                            </a>
                                             <a style={{ cursor: 'pointer' }} onClick={(e) => deleteTodo(e, item.id)}>
                                                 <i className="fa fa-times"></i>
                                             </a>
@@ -196,7 +239,7 @@ const Todo = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     </>)
 }
 
