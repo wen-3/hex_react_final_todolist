@@ -66,6 +66,8 @@ const Todo = () => {
     // 1. 取得
     const [todo, setTodo] = useState([]);
     const getTodo = async () => {
+        console.log(todo);
+
         try {
             const res = await fetch(`${VITE_API_URL}/todos`, {
                 headers: {
@@ -189,6 +191,31 @@ const Todo = () => {
         }
     }
 
+
+    // 切換狀態
+    const toggleTodo = async (e, id) => {
+        e.preventDefault();
+        try {
+            const res = await fetch(`${VITE_API_URL}/todos/${id}/toggle`, {
+                method: 'PATCH',
+                headers: {
+                    Authorization: token
+                }
+            })
+
+            if (res.ok) {
+                const newTodo = todo.map(item =>
+                    (item.id !== id) ? item : { ...item, status: !item.status }
+                )
+                setTodo(newTodo);
+                alert('狀態更新成功')
+            } else {
+                alert('狀態更新失敗')
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
     return (<>
         <div id="todoListPage" className="bg-half">
             <nav>
@@ -218,7 +245,8 @@ const Todo = () => {
                                     return (
                                         <li key={item.id}>
                                             <label className="todoList_label">
-                                                <input className="todoList_input" type="checkbox" value="true" />
+                                                <input className="todoList_input" type="checkbox" checked={item.status}
+                                                    onChange={(e) => { toggleTodo(e, item.id) }} />
                                                 <span>{item.content}</span>
                                             </label>
                                             <a style={{ cursor: 'pointer' }} onClick={(e) => editTodo(e, item.id)}>
@@ -232,8 +260,8 @@ const Todo = () => {
                                 })}
                             </ul>
                             <div className="todoList_statistics">
-                                <p> 5 個已完成項目</p>
-                                <a style={{ cursor: 'pointer' }}>清除已完成項目</a>
+                                <p> {todo.filter(item => item.status).length} 個已完成項目</p>
+                                <a style={{ cursor: 'pointer' }} onClick={e => setTodo(todo.filter(item => item.status === false))}>清除已完成項目</a>
                             </div>
                         </div>
                     </div>
