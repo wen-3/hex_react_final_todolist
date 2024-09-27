@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const { VITE_API_URL } = import.meta.env;
@@ -66,8 +66,6 @@ const Todo = () => {
     // 1. 取得
     const [todo, setTodo] = useState([]);
     const getTodo = async () => {
-        console.log(todo);
-
         try {
             const res = await fetch(`${VITE_API_URL}/todos`, {
                 headers: {
@@ -216,6 +214,29 @@ const Todo = () => {
             console.log(err);
         }
     }
+
+    // 狀態頁籤切換
+    const [statusTab, setStatusTab] = useState('all');
+    const filterTodo = useMemo(() => {
+        if (statusTab === 'completed') {
+            return todo.filter(item => item.status === true);
+        } else if (statusTab === 'pending') {
+            return todo.filter(item => item.status === false);
+        } else {
+            return todo;
+        }
+    })
+
+    // const filterTodo = todo.filter(item => {
+    //     if (statusTab === 'completed') {
+    //         return item.status === true
+    //     } else if (statusTab === 'pending') {
+    //         return item.status === false;
+    //     } else {
+    //         return item;
+    //     }
+    // });
+
     return (<>
         <div id="todoListPage" className="bg-half">
             <nav>
@@ -235,13 +256,13 @@ const Todo = () => {
                     </div>
                     <div className="todoList_list">
                         <ul className="todoList_tab">
-                            <li><a style={{ cursor: 'pointer' }} className="active">全部</a></li>
-                            <li><a style={{ cursor: 'pointer' }}>待完成</a></li>
-                            <li><a style={{ cursor: 'pointer' }}>已完成</a></li>
+                            <li><a style={{ cursor: 'pointer' }} className={statusTab === 'all' ? 'activate' : ''} onClick={() => setStatusTab('all')}>全部</a></li>
+                            <li><a style={{ cursor: 'pointer' }} className={statusTab === 'pending' ? 'activate' : ''} onClick={() => setStatusTab('pending')}>待完成</a></li>
+                            <li><a style={{ cursor: 'pointer' }} className={statusTab === 'completed' ? 'activate' : ''} onClick={() => setStatusTab('completed')}>已完成</a></li>
                         </ul>
                         <div className="todoList_items">
                             <ul className="todoList_item">
-                                {todo.map(item => {
+                                {filterTodo.map(item => {
                                     return (
                                         <li key={item.id}>
                                             <label className="todoList_label">
@@ -259,10 +280,25 @@ const Todo = () => {
                                     )
                                 })}
                             </ul>
-                            <div className="todoList_statistics">
-                                <p> {todo.filter(item => item.status).length} 個已完成項目</p>
-                                <a style={{ cursor: 'pointer' }} onClick={e => setTodo(todo.filter(item => item.status === false))}>清除已完成項目</a>
-                            </div>
+                            {statusTab === 'all'
+                                ? (
+                                    <div className="todoList_statistics">
+                                        <p> {todo.filter(item => !item.status).length} 個待完成項目</p>
+                                        <a style={{ cursor: 'pointer' }} onClick={e => setTodo(todo.filter(item => item.status === false))}>清除已完成項目</a>
+                                    </div>
+                                )
+                                : statusTab === 'pending'
+                                    ? (
+                                        <div className="todoList_statistics">
+                                            <p> {todo.filter(item => !item.status).length} 個待完成項目</p>
+                                        </div>
+                                    )
+                                    : (
+                                        <div className="todoList_statistics">
+                                            <p> {todo.filter(item => item.status).length} 個完成項目</p>
+                                        </div>
+                                    )
+                            }
                         </div>
                     </div>
                 </div>
