@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 const { VITE_API_URL } = import.meta.env;
 
 const Login = () => {
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -20,15 +21,16 @@ const Login = () => {
     const navigate = useNavigate();
 
     const clickLogin = async (e) => {
-        const { email, password } = formData;
-        if (!email || !password) {
-            alert('欄位皆為必填，請確實填寫!');
-            return;
-        }
-
-        const url = `${VITE_API_URL}/users/sign_in`
-
         try {
+            setIsLoading(true);
+            const { email, password } = formData;
+            if (!email || !password) {
+                alert('欄位皆為必填，請確實填寫!');
+                return;
+            }
+
+            const url = `${VITE_API_URL}/users/sign_in`;
+
             const res = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -58,6 +60,8 @@ const Login = () => {
             }
         } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -72,7 +76,7 @@ const Login = () => {
                 <label className="formControls_label" htmlFor="password">密碼</label>
                 <input className="formControls_input" type="password" name="password" id="password" placeholder="請輸入密碼" onChange={handelOnChange} required />
 
-                <input className="formControls_btnSubmit" type="button" onClick={clickLogin} value="登入" />
+                <input className="formControls_btnSubmit" type="button" onClick={clickLogin} value="登入" disabled={isLoading} />
                 <NavLink to='/signup' className='formControls_btnLink'>註冊帳號</NavLink>
             </form>
         </div>

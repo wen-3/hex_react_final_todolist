@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 const { VITE_API_URL } = import.meta.env;
 
 const Todo = () => {
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         checkAuth();
         getTodo();
@@ -44,6 +45,7 @@ const Todo = () => {
     // 登出
     const handelSignOut = async () => {
         try {
+            setIsLoading(true);
             const res = await fetch(`${VITE_API_URL}/users/sign_out`, {
                 method: 'POST',
                 headers: {
@@ -59,6 +61,8 @@ const Todo = () => {
             }
         } catch (err) {
             console.log(err.message);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -91,13 +95,14 @@ const Todo = () => {
     const [content, setContent] = useState('');
 
     const addTodo = async (e) => {
-        e.preventDefault();
-        if (!content) {
-            alert('欄位不可為空');
-            return;
-        }
-
         try {
+            setIsLoading(true);
+            e.preventDefault();
+            if (!content) {
+                alert('欄位不可為空');
+                return;
+            }
+
             const res = await fetch(`${VITE_API_URL}/todos`, {
                 method: 'POST',
                 headers: {
@@ -124,25 +129,28 @@ const Todo = () => {
 
         } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false);
         }
     }
 
     // 3. 編輯
     const editTodo = async (e, id) => {
-        e.preventDefault();
-        const inputText = prompt('請輸入修改內容文字:');
-
-        if (inputText === '') {
-            alert('內容不可空白');
-            return;
-        }
-
-        if (!inputText) {
-            alert('取消編輯');
-            return;
-        }
-
         try {
+            setIsLoading(true);
+            e.preventDefault();
+            const inputText = prompt('請輸入修改內容文字:');
+
+            if (inputText === '') {
+                alert('內容不可空白');
+                return;
+            }
+
+            if (!inputText) {
+                alert('取消編輯');
+                return;
+            }
+
             const res = await fetch(`${VITE_API_URL}/todos/${id}`, {
                 method: 'PUT',
                 headers: {
@@ -165,14 +173,17 @@ const Todo = () => {
             }
         } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false);
         }
     }
 
     // 4. 刪除
     const deleteTodo = async (e, id) => {
-        e.preventDefault();
-
         try {
+            setIsLoading(true);
+            e.preventDefault();
+
             const res = await fetch(`${VITE_API_URL}/todos/${id}`, {
                 method: 'DELETE',
                 headers: {
@@ -188,6 +199,8 @@ const Todo = () => {
             }
         } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -237,7 +250,7 @@ const Todo = () => {
                 <h1><a href="/">ONLINE TODO LIST</a></h1>
                 <ul>
                     <li className="todo_sm"><span>{getNickname}</span></li>
-                    <li><a style={{ cursor: 'pointer' }} onClick={handelSignOut} >登出</a></li>
+                    <li><a style={{ cursor: 'pointer' }} onClick={(e) => isLoading ? null : handelSignOut()} >登出</a></li>
                 </ul>
             </nav>
             <div className="conatiner todoListPage vhContainer">
@@ -249,8 +262,9 @@ const Todo = () => {
                                 if (e.key === 'Enter') {
                                     addTodo(e);
                                 }
-                            }} />
-                        <a style={{ cursor: 'pointer' }} onClick={addTodo}>
+                            }}
+                            disabled={isLoading} />
+                        <a style={{ cursor: 'pointer' }} onClick={(e) => isLoading ? null : addTodo(e)}>
                             <i className="fa fa-plus"></i>
                         </a>
                     </div>
@@ -270,10 +284,10 @@ const Todo = () => {
                                                     onChange={(e) => { toggleTodo(e, item.id) }} />
                                                 <span>{item.content}</span>
                                             </label>
-                                            <a style={{ cursor: 'pointer' }} onClick={(e) => editTodo(e, item.id)}>
+                                            <a style={{ cursor: 'pointer' }} onClick={(e) => isLoading ? null : editTodo(e, item.id)}>
                                                 <i className="fa-solid fa-pen-to-square"></i>
                                             </a>
-                                            <a style={{ cursor: 'pointer' }} onClick={(e) => deleteTodo(e, item.id)}>
+                                            <a style={{ cursor: 'pointer' }} onClick={(e) => isLoading ? null : deleteTodo(e, item.id)} disabled={isLoading}>
                                                 <i className="fa fa-times"></i>
                                             </a>
                                         </li>
