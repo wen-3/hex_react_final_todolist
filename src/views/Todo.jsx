@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const { VITE_API_URL } = import.meta.env;
@@ -76,6 +76,7 @@ const Todo = () => {
             if (res.ok) {
                 const { data } = await res.json();
                 setTodo(data);
+                setFilterTodo(data);
                 alert('資料成功取得')
             } else {
                 alert('資料取得失敗')
@@ -217,25 +218,17 @@ const Todo = () => {
 
     // 狀態頁籤切換
     const [statusTab, setStatusTab] = useState('all');
-    const filterTodo = useMemo(() => {
+    const [filterTodo, setFilterTodo] = useState([]);
+
+    useEffect(() => {
         if (statusTab === 'completed') {
-            return todo.filter(item => item.status === true);
+            setFilterTodo(todo.filter(item => item.status === true));
         } else if (statusTab === 'pending') {
-            return todo.filter(item => item.status === false);
+            setFilterTodo(todo.filter(item => item.status === false));
         } else {
-            return todo;
+            setFilterTodo(todo);
         }
     }, [todo, statusTab])
-
-    // const filterTodo = todo.filter(item => {
-    //     if (statusTab === 'completed') {
-    //         return item.status === true
-    //     } else if (statusTab === 'pending') {
-    //         return item.status === false;
-    //     } else {
-    //         return item;
-    //     }
-    // });
 
     return (<>
         <div id="todoListPage" className="bg-half">
@@ -284,7 +277,7 @@ const Todo = () => {
                                 ? (
                                     <div className="todoList_statistics">
                                         <p> {todo.filter(item => !item.status).length} 個待完成項目</p>
-                                        <a style={{ cursor: 'pointer' }} onClick={e => setTodo(todo.filter(item => item.status === false))}>清除已完成項目</a>
+                                        <a style={{ cursor: 'pointer' }} onClick={e => setFilterTodo(todo.filter(item => item.status === false))}>清除已完成項目</a>
                                     </div>
                                 )
                                 : statusTab === 'pending'
