@@ -117,6 +117,7 @@ const Todo = () => {
                 ])
                 alert('新增成功')
                 setContent('');
+                setStatusTab('all')
             } else {
                 alert('新增失敗')
             }
@@ -242,7 +243,13 @@ const Todo = () => {
             <div className="conatiner todoListPage vhContainer">
                 <div className="todoList_Content">
                     <div className="inputBox">
-                        <input type="text" placeholder="請輸入待辦事項" value={content} onChange={(e) => setContent(e.target.value)} />
+                        <input type="text" placeholder="請輸入待辦事項" value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    addTodo(e);
+                                }
+                            }} />
                         <a style={{ cursor: 'pointer' }} onClick={addTodo}>
                             <i className="fa fa-plus"></i>
                         </a>
