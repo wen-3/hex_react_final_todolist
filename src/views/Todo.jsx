@@ -225,7 +225,7 @@ const Todo = () => {
         } else {
             return todo;
         }
-    })
+    }, [todo, statusTab])
 
     // const filterTodo = todo.filter(item => {
     //     if (statusTab === 'completed') {
