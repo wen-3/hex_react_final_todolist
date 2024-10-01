@@ -269,53 +269,56 @@ const Todo = () => {
                             <i className="fa fa-plus"></i>
                         </a>
                     </div>
-                    <div className="todoList_list">
-                        <ul className="todoList_tab">
-                            <li><a style={{ cursor: 'pointer' }} className={statusTab === 'all' ? 'activate' : ''} onClick={() => setStatusTab('all')}>全部</a></li>
-                            <li><a style={{ cursor: 'pointer' }} className={statusTab === 'pending' ? 'activate' : ''} onClick={() => setStatusTab('pending')}>待完成</a></li>
-                            <li><a style={{ cursor: 'pointer' }} className={statusTab === 'completed' ? 'activate' : ''} onClick={() => setStatusTab('completed')}>已完成</a></li>
-                        </ul>
-                        <div className="todoList_items">
-                            <ul className="todoList_item">
-                                {filterTodo.map(item => {
-                                    return (
-                                        <li key={item.id}>
-                                            <label className="todoList_label">
-                                                <input className="todoList_input" type="checkbox" checked={item.status}
-                                                    onChange={(e) => { toggleTodo(e, item.id) }} />
-                                                <span>{item.content}</span>
-                                            </label>
-                                            <a style={{ cursor: 'pointer' }} onClick={(e) => isLoading ? null : editTodo(e, item.id)}>
-                                                <i className="fa-solid fa-pen-to-square"></i>
-                                            </a>
-                                            <a style={{ cursor: 'pointer' }} onClick={(e) => isLoading ? null : deleteTodo(e, item.id)} disabled={isLoading}>
-                                                <i className="fa fa-times"></i>
-                                            </a>
-                                        </li>
-                                    )
-                                })}
+                    {todo.length === 0
+                        ? <div>目前尚無待辦事項</div>
+                        : (<div className="todoList_list">
+                            <ul className="todoList_tab">
+                                <li><a style={{ cursor: 'pointer' }} className={statusTab === 'all' ? 'active' : ''} onClick={() => setStatusTab('all')}>全部</a></li>
+                                <li><a style={{ cursor: 'pointer' }} className={statusTab === 'pending' ? 'active' : ''} onClick={() => setStatusTab('pending')}>待完成</a></li>
+                                <li><a style={{ cursor: 'pointer' }} className={statusTab === 'completed' ? 'active' : ''} onClick={() => setStatusTab('completed')}>已完成</a></li>
                             </ul>
-                            {statusTab === 'all'
-                                ? (
-                                    <div className="todoList_statistics">
-                                        <p> {todo.filter(item => !item.status).length} 個待完成項目</p>
-                                        <a style={{ cursor: 'pointer' }} onClick={e => setFilterTodo(todo.filter(item => item.status === false))}>清除已完成項目</a>
-                                    </div>
-                                )
-                                : statusTab === 'pending'
+                            <div className="todoList_items">
+                                <ul className="todoList_item">
+                                    {filterTodo.map(item => {
+                                        return (
+                                            <li key={item.id}>
+                                                <label className="todoList_label">
+                                                    <input className="todoList_input" type="checkbox" checked={item.status}
+                                                        onChange={(e) => { toggleTodo(e, item.id) }} />
+                                                    <span>{item.content}</span>
+                                                </label>
+                                                <a style={{ cursor: 'pointer' }} onClick={(e) => isLoading ? null : editTodo(e, item.id)}>
+                                                    <i className="fa-solid fa-pen-to-square"></i>
+                                                </a>
+                                                <a style={{ cursor: 'pointer' }} onClick={(e) => isLoading ? null : deleteTodo(e, item.id)} disabled={isLoading}>
+                                                    <i className="fa fa-times"></i>
+                                                </a>
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
+                                {statusTab === 'all'
                                     ? (
                                         <div className="todoList_statistics">
                                             <p> {todo.filter(item => !item.status).length} 個待完成項目</p>
+                                            <a style={{ cursor: 'pointer' }} onClick={e => setFilterTodo(todo.filter(item => item.status === false))}>清除已完成項目</a>
                                         </div>
                                     )
-                                    : (
-                                        <div className="todoList_statistics">
-                                            <p> {todo.filter(item => item.status).length} 個完成項目</p>
-                                        </div>
-                                    )
-                            }
-                        </div>
-                    </div>
+                                    : statusTab === 'pending'
+                                        ? (
+                                            <div className="todoList_statistics">
+                                                <p> {todo.filter(item => !item.status).length} 個待完成項目</p>
+                                            </div>
+                                        )
+                                        : (
+                                            <div className="todoList_statistics">
+                                                <p> {todo.filter(item => item.status).length} 個完成項目</p>
+                                            </div>
+                                        )
+                                }
+                            </div>
+                        </div>)
+                    }
                 </div>
             </div>
         </div >
