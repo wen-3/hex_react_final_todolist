@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import showAlert from "../components/ShowAlert";
 
 const { VITE_API_URL } = import.meta.env;
 
@@ -32,9 +33,9 @@ const Todo = () => {
             setGetNickname(nickname);
 
             if (res.ok) {
-                alert('開始使用你的代辦清單吧~');
+                showAlert('success', `哈囉 ${nickname}\n 開始使用你的代辦清單吧~`);
             } else {
-                alert('已登出或無權使用')
+                showAlert('error', '已登出或無權使用', false, 1500);
                 navigate('/');
             }
         } catch (err) {
@@ -54,9 +55,10 @@ const Todo = () => {
             })
 
             if (res.ok) {
-                alert('登出成功')
+                showAlert('success', '登出成功', false, 1500);
                 navigate('/');
             } else {
+                showAlert('error', '登出失敗', false, 1500);
                 alert('登出失敗')
             }
         } catch (err) {
@@ -81,9 +83,8 @@ const Todo = () => {
                 const { data } = await res.json();
                 setTodo(data);
                 setFilterTodo(data);
-                alert('資料成功取得')
             } else {
-                alert('資料取得失敗')
+                showAlert('error', '資料取得失敗', false, 1500);
             }
         } catch (err) {
             console.log(err);
@@ -99,7 +100,7 @@ const Todo = () => {
             setIsLoading(true);
             e.preventDefault();
             if (!content) {
-                alert('欄位不可為空');
+                showAlert('warning', '欄位不可為空');
                 return;
             }
 
@@ -120,11 +121,11 @@ const Todo = () => {
                     ...todo,
                     newTodo
                 ])
-                alert('新增成功')
+                showAlert('success', '新增成功', false, 1500);
                 setContent('');
                 setStatusTab('all')
             } else {
-                alert('新增失敗')
+                showAlert('error', '新增失敗', false, 1500);
             }
 
         } catch (err) {
@@ -142,12 +143,12 @@ const Todo = () => {
             const inputText = prompt('請輸入修改內容文字:');
 
             if (inputText === '') {
-                alert('內容不可空白');
+                showAlert('warning', '內容不可空白');
                 return;
             }
 
             if (!inputText) {
-                alert('取消編輯');
+                showAlert('warning', '取消編輯');
                 return;
             }
 
@@ -167,9 +168,9 @@ const Todo = () => {
                     (item.id !== id) ? item : { ...item, content: inputText }
                 )
                 setTodo(newTodo);
-                alert('更新成功');
+                showAlert('success', '更新成功', false, 1500);
             } else {
-                alert('更新失敗');
+                showAlert('error', '更新失敗', false, 1500);
             }
         } catch (err) {
             console.log(err);
@@ -193,9 +194,9 @@ const Todo = () => {
 
             if (res.ok) {
                 setTodo(todo.filter(item => item.id !== id));
-                alert('刪除成功')
+                showAlert('success', '刪除成功', false, 1500);
             } else {
-                alert('刪除失敗')
+                showAlert('error', '刪除失敗', false, 1500);
             }
         } catch (err) {
             console.log(err);
@@ -221,9 +222,9 @@ const Todo = () => {
                     (item.id !== id) ? item : { ...item, status: !item.status }
                 )
                 setTodo(newTodo);
-                alert('狀態更新成功')
+                showAlert('success', '狀態更新成功', false, 1500);
             } else {
-                alert('狀態更新失敗')
+                showAlert('error', '狀態更新失敗', false, 1500);
             }
         } catch (err) {
             console.log(err);
